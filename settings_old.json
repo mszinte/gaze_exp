@@ -1,0 +1,7 @@
+{
+    "account":"mszinte@login.mesocentre.univ-amu.fr",
+    "project_name": "gaze_exp",
+    "data_dir": "/scratch/mszinte/data",
+    "data_dir_local": "/home/mszinte/disks/meso_S/data",
+    "subject_list": ["sub-001","sub-002"]
+}
