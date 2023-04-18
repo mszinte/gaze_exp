@@ -63,6 +63,8 @@ task = analysis_info['task']
 high_pass_threshold = analysis_info['high_pass_threshold'] 
 high_pass_type = analysis_info['high_pass_type'] 
 sessions = analysis_info['sessions']
+sessions_all = sessions + ['*']
+
 
 for session in sessions : 
     # Get fmriprep filenames
@@ -91,12 +93,15 @@ for session in sessions :
         high_pass_func = masking.unmask(masked_data, mask_fn)
         high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
 
+
+
+for session in sessions_all : 
     # Average tasks runs
-    preproc_files = glob.glob("{}/*_desc-preproc_bold_{}.nii.gz".format(pp_data_func_dir, high_pass_type))
+    preproc_files = glob.glob("{}/{}_{}_*_desc-preproc_bold_{}.nii.gz".format(pp_data_func_dir,subject,session, high_pass_type))
     avg_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct_avg".format(main_dir, project_dir, subject)
     os.makedirs(avg_dir, exist_ok=True)
 
-    avg_file = "{}/{}_{}_task-{}_fmriprep_dct_bold_avg.nii.gz".format(avg_dir, subject,session, task)
+    avg_file = "{}/{}_{}_task-{}_fmriprep_dct_bold_avg.nii.gz".format(avg_dir, subject, session, task)
     img = nb.load(preproc_files[0])
     data_avg = np.zeros(img.shape)
 
@@ -120,7 +125,7 @@ for session in sessions :
         print("loo_avg-{}".format(loo_num+1))
 
         # compute average between loo runs
-        loo_avg_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo_avg-{}.nii.gz".format(avg_dir, subject,session, loo_num+1)
+        loo_avg_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo_avg-{}.nii.gz".format(avg_dir, subject, session, loo_num+1)
 
         img = nb.load(preproc_files[0])
         data_loo_avg = np.zeros(img.shape)
@@ -138,7 +143,7 @@ for session in sessions :
         # copy loo run (left one out run)
         for loo in preproc_files:
             if loo not in avg_runs:
-                loo_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo-{}.nii.gz".format(avg_dir, subject,session, loo_num+1)
+                loo_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo-{}.nii.gz".format(avg_dir, subject, session, loo_num+1)
                 print("loo: {}".format(loo))
                 os.system("{} {} {}".format(trans_cmd, loo, loo_file))
 
@@ -155,6 +160,6 @@ for session in sessions :
     #     os.system("{} {} {}".format(trans_cmd, orig_file, dest_file))
 
 
-    # Define permission cmd
-    os.system("chmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir))
-    os.system("chgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group))
+# Define permission cmd
+os.system("chmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir))
+os.system("chgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group))
