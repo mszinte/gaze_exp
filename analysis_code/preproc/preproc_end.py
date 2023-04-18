@@ -63,6 +63,8 @@ task = analysis_info['task']
 high_pass_threshold = analysis_info['high_pass_threshold'] 
 high_pass_type = analysis_info['high_pass_type'] 
 sessions = analysis_info['sessions']
+sessions_all = sessions + ['*']
+
 
 for session in sessions : 
     # Get fmriprep filenames
@@ -92,68 +94,70 @@ for session in sessions :
         high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
 
 
-# Average tasks runs
-preproc_files = glob.glob("{}/*_*_desc-preproc_bold_{}.nii.gz".format(pp_data_func_dir, high_pass_type))
-avg_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct_avg".format(main_dir, project_dir, subject)
-os.makedirs(avg_dir, exist_ok=True)
 
-avg_file = "{}/{}_{}_task-{}_fmriprep_dct_bold_avg.nii.gz".format(avg_dir, subject, session, task)
-img = nb.load(preproc_files[0])
-data_avg = np.zeros(img.shape)
+for session in sessions_all : 
+    # Average tasks runs
+    preproc_files = glob.glob("{}/{}_{}_*_desc-preproc_bold_{}.nii.gz".format(pp_data_func_dir,subject,session, high_pass_type))
+    avg_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct_avg".format(main_dir, project_dir, subject)
+    os.makedirs(avg_dir, exist_ok=True)
 
-print("averaging...")
-for file in preproc_files:
-    print('add: {}'.format(file))
-    data_val = []
-    data_val_img = nb.load(file)
-    data_val = data_val_img.get_fdata()
-    data_avg += data_val/len(preproc_files)
-
-avg_img = nb.Nifti1Image(dataobj=data_avg, affine=img.affine, header=img.header)
-avg_img.to_filename(avg_file)
-
-# Leave-one-out averages
-if len(preproc_files):
-    combi = list(it.combinations(preproc_files, len(preproc_files)-1))
-
-
-for loo_num, avg_runs in enumerate(combi):
-    print("loo_avg-{}".format(loo_num+1))
-
-    # compute average between loo runs
-    loo_avg_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo_avg-{}.nii.gz".format(avg_dir, subject, session, loo_num+1)
-
+    avg_file = "{}/{}_{}_task-{}_fmriprep_dct_bold_avg.nii.gz".format(avg_dir, subject, session, task)
     img = nb.load(preproc_files[0])
-    data_loo_avg = np.zeros(img.shape)
+    data_avg = np.zeros(img.shape)
 
-    for avg_run in avg_runs:
-        print('loo_avg-{} add: {}'.format(loo_num+1, avg_run))
+    print("averaging...")
+    for file in preproc_files:
+        print('add: {}'.format(file))
         data_val = []
-        data_val_img = nb.load(avg_run)
+        data_val_img = nb.load(file)
         data_val = data_val_img.get_fdata()
-        data_loo_avg += data_val/len(avg_runs)
+        data_avg += data_val/len(preproc_files)
 
-    loo_avg_img = nb.Nifti1Image(dataobj=data_loo_avg, affine=img.affine, header=img.header)
-    loo_avg_img.to_filename(loo_avg_file)
+    avg_img = nb.Nifti1Image(dataobj=data_avg, affine=img.affine, header=img.header)
+    avg_img.to_filename(avg_file)
 
-    # copy loo run (left one out run)
-    for loo in preproc_files:
-        if loo not in avg_runs:
-            loo_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo-{}.nii.gz".format(avg_dir, subject, session, loo_num+1)
-            print("loo: {}".format(loo))
-            os.system("{} {} {}".format(trans_cmd, loo, loo_file))
+    # Leave-one-out averages
+    if len(preproc_files):
+        combi = list(it.combinations(preproc_files, len(preproc_files)-1))
 
-# # Anatomy
-# print("getting anatomy...")
-# output_files = ['dseg','desc-preproc_T1w','desc-aparcaseg_dseg','desc-aseg_dseg','desc-brain_mask']
-# orig_dir_anat = "{}/{}/derivatives/fmriprep/fmriprep/{}/{}/anat/".format(main_dir, project_dir, subject, subject,session)
-# dest_dir_anat = "{}/{}/derivatives/pp_data/{}/anat".format(main_dir, project_dir, subject, subject)
-# os.makedirs(dest_dir_anat,exist_ok=True)
 
-# for output_file in output_files:
-#     orig_file = "{}/{}_{}_{}.nii.gz".format(orig_dir_anat, subject, session, output_file)
-#     dest_file = "{}/{}_{}.nii.gz".format(dest_dir_anat, subject, output_file)
-#     os.system("{} {} {}".format(trans_cmd, orig_file, dest_file))
+    for loo_num, avg_runs in enumerate(combi):
+        print("loo_avg-{}".format(loo_num+1))
+
+        # compute average between loo runs
+        loo_avg_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo_avg-{}.nii.gz".format(avg_dir, subject, session, loo_num+1)
+
+        img = nb.load(preproc_files[0])
+        data_loo_avg = np.zeros(img.shape)
+
+        for avg_run in avg_runs:
+            print('loo_avg-{} add: {}'.format(loo_num+1, avg_run))
+            data_val = []
+            data_val_img = nb.load(avg_run)
+            data_val = data_val_img.get_fdata()
+            data_loo_avg += data_val/len(avg_runs)
+
+        loo_avg_img = nb.Nifti1Image(dataobj=data_loo_avg, affine=img.affine, header=img.header)
+        loo_avg_img.to_filename(loo_avg_file)
+
+        # copy loo run (left one out run)
+        for loo in preproc_files:
+            if loo not in avg_runs:
+                loo_file = "{}/{}_{}_task-prf_fmriprep_dct_bold_loo-{}.nii.gz".format(avg_dir, subject, session, loo_num+1)
+                print("loo: {}".format(loo))
+                os.system("{} {} {}".format(trans_cmd, loo, loo_file))
+
+    # # Anatomy
+    # print("getting anatomy...")
+    # output_files = ['dseg','desc-preproc_T1w','desc-aparcaseg_dseg','desc-aseg_dseg','desc-brain_mask']
+    # orig_dir_anat = "{}/{}/derivatives/fmriprep/fmriprep/{}/{}/anat/".format(main_dir, project_dir, subject, subject,session)
+    # dest_dir_anat = "{}/{}/derivatives/pp_data/{}/anat".format(main_dir, project_dir, subject, subject)
+    # os.makedirs(dest_dir_anat,exist_ok=True)
+
+    # for output_file in output_files:
+    #     orig_file = "{}/{}_{}_{}.nii.gz".format(orig_dir_anat, subject, session, output_file)
+    #     dest_file = "{}/{}_{}.nii.gz".format(dest_dir_anat, subject, output_file)
+    #     os.system("{} {} {}".format(trans_cmd, orig_file, dest_file))
 
 
 # Define permission cmd
