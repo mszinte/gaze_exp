@@ -63,7 +63,7 @@ task = analysis_info['task']
 high_pass_threshold = analysis_info['high_pass_threshold'] 
 high_pass_type = analysis_info['high_pass_type'] 
 sessions = analysis_info['sessions']
-sessions_excluded = analysis_info['sessions_excluded']
+sessions_excluded = sessions[2:]
 anat_session = sessions[2]
 sessions_all = sessions + ['*']
 

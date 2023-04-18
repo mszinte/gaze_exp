@@ -63,7 +63,7 @@ task = analysis_info['task']
 high_pass_threshold = analysis_info['high_pass_threshold'] 
 high_pass_type = analysis_info['high_pass_type'] 
 sessions = analysis_info['sessions']
-sessions_excluded = analysis_info['sessions_excluded']
+sessions_excluded = sessions[2:]
 anat_session = sessions[2]
 sessions_all = sessions + ['*']
 
@@ -79,24 +79,24 @@ for session in sessions :
     pp_data_func_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct".format(main_dir, project_dir, subject)
     os.makedirs(pp_data_func_dir, exist_ok=True)
 
-#     # High pass filtering and z-scoring
-#     print("high-pass filtering...")
-#     for func_fn, mask_fn in zip(fmriprep_func_fns,fmriprep_mask_fns):    
-#         masked_data = masking.apply_mask(func_fn, mask_fn)
+    # High pass filtering and z-scoring
+    print("high-pass filtering...")
+    for func_fn, mask_fn in zip(fmriprep_func_fns,fmriprep_mask_fns):    
+        masked_data = masking.apply_mask(func_fn, mask_fn)
 
-#         if high_pass_type == 'dct':
-#             n_vol = masked_data.shape[0]
-#             ft = np.linspace(0.5 * TR, (n_vol + 0.5) * TR, n_vol, endpoint=False)
-#             hp_set = _cosine_drift(high_pass_threshold, ft)
-#             masked_data = signal.clean(masked_data, detrend=False, standardize=True, confounds=hp_set)
+        if high_pass_type == 'dct':
+            n_vol = masked_data.shape[0]
+            ft = np.linspace(0.5 * TR, (n_vol + 0.5) * TR, n_vol, endpoint=False)
+            hp_set = _cosine_drift(high_pass_threshold, ft)
+            masked_data = signal.clean(masked_data, detrend=False, standardize=True, confounds=hp_set)
 
-#         elif high_pass_type == 'savgol':
-#             window = int(np.round((1 / high_pass_threshold) / TR))
-#             masked_data -= savgol_filter(masked_data, window_length=window, polyorder=2, axis=0)
-#             masked_data = signal.clean(masked_data, detrend=False, standardize=True)
+        elif high_pass_type == 'savgol':
+            window = int(np.round((1 / high_pass_threshold) / TR))
+            masked_data -= savgol_filter(masked_data, window_length=window, polyorder=2, axis=0)
+            masked_data = signal.clean(masked_data, detrend=False, standardize=True)
 
-#         high_pass_func = masking.unmask(masked_data, mask_fn)
-#         high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
+        high_pass_func = masking.unmask(masked_data, mask_fn)
+        high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
 
 
 
@@ -157,19 +157,19 @@ for session in sessions_all :
                 os.system("{} {} {}".format(trans_cmd, loo, loo_file))
 
                 
-# # ANATOMY
-# print("getting anatomy...")
-# output_files = ['dseg','desc-preproc_T1w','desc-aparcaseg_dseg','desc-aseg_dseg','desc-brain_mask']
-# orig_dir_anat = "{}/{}/derivatives/fmriprep/fmriprep/{}/{}/anat/".format(main_dir, project_dir, subject, anat_session)
-# dest_dir_anat = "{}/{}/derivatives/pp_data/{}/anat".format(main_dir, project_dir, subject)
-# os.makedirs(dest_dir_anat,exist_ok=True)
+# ANATOMY
+print("getting anatomy...")
+output_files = ['dseg','desc-preproc_T1w','desc-aparcaseg_dseg','desc-aseg_dseg','desc-brain_mask']
+orig_dir_anat = "{}/{}/derivatives/fmriprep/fmriprep/{}/{}/anat/".format(main_dir, project_dir, subject, anat_session)
+dest_dir_anat = "{}/{}/derivatives/pp_data/{}/anat".format(main_dir, project_dir, subject)
+os.makedirs(dest_dir_anat,exist_ok=True)
 
-# for output_file in output_files:
-#     orig_file = "{}/{}_{}_{}.nii.gz".format(orig_dir_anat, subject, anat_session, output_file)
-#     dest_file = "{}/{}_{}.nii.gz".format(dest_dir_anat, subject, output_file)
-#     os.system("{} {} {}".format(trans_cmd, orig_file, dest_file))
+for output_file in output_files:
+    orig_file = "{}/{}_{}_{}.nii.gz".format(orig_dir_anat, subject, anat_session, output_file)
+    dest_file = "{}/{}_{}.nii.gz".format(dest_dir_anat, subject, output_file)
+    os.system("{} {} {}".format(trans_cmd, orig_file, dest_file))
 
 
-# # Define permission cmd
-# os.system("chmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir))
-# os.system("chgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group))
+# Define permission cmd
+os.system("chmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir))
+os.system("chgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group))
