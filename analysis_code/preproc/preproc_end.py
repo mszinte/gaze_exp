@@ -93,7 +93,7 @@ for session in sessions :
 
 
 # Average tasks runs
-preproc_files = glob.glob("{}/*_*_desc-preproc_bold_{}.nii.gz".format(pp_data_func_dir, high_pass_type))
+preproc_files = glob.glob("{}/*_desc-preproc_bold_{}.nii.gz".format(pp_data_func_dir, high_pass_type))
 avg_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct_avg".format(main_dir, project_dir, subject)
 os.makedirs(avg_dir, exist_ok=True)
 
