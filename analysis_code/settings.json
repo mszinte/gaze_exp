@@ -3,6 +3,18 @@
     "project_name": "gaze_exp",
     "data_dir": "/scratch/mszinte/data",
     "data_dir_local": "/home/mszinte/disks/meso_S/data",
-    "subject_list": ["sub-001","sub-002"]
-
+    "subject_list": ["sub-001","sub-002"],
+    "task": "prf",
+    "sessions": ["ses-01","ses-02"],
+    "TR": 1.3,
+    "high_pass_threshold": 0.01,
+    "high_pass_type": "dct",
+    "xfm_name": "prf.fmriprep",
+    "xfm_masks": ["cortical", "thick", "thin", "nearest"],
+    "cortical_mask": "cortical",
+    "max_ecc_size": 19,
+    "ecc_th": [0,19],
+    "size_th": [0.1,19],
+    "rsqr_th": [0,1],
+    "alpha_range": [0,0.4]
 }
