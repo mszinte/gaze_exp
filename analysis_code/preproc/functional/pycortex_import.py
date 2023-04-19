@@ -44,7 +44,7 @@ import nibabel as nb
 deb = ipdb.set_trace
 
 # functions import
-sys.path.append("{}/../utils".format(os.getcwd()))
+sys.path.append("{}/../../utils".format(os.getcwd()))
 from pycortex_utils import set_pycortex_config_file
 
 # get inputs
@@ -54,7 +54,7 @@ subject = sys.argv[3]
 group = sys.argv[4]
 
 # define analysis parameters
-with open('../settings.json') as f:
+with open('/../../settings.json') as f:
     json_s = f.read()
     analysis_info = json.loads(json_s)
 xfm_name = analysis_info['xfm_name']
