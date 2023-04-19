@@ -20,12 +20,12 @@ To run:
 -----------------------------------------------------------------------------------------
 Exemple:
 1. cd to function
->> cd ~/projects/stereo_prf/analysis_code/postproc/prf/fit
+>> cd ~/projects/gaze_exp/analysis_code/postproc/prf/fit
 2. run python command
 python submit_fit_jobs.py [main directory] [project name] [subject num] [group]
 -----------------------------------------------------------------------------------------
 Exemple:
-python submit_fit_jobs.py /scratch/mszinte/data amblyo_prf sub-01 327
+python submit_fit_jobs.py /scratch/mszinte/data gaze_exp sub-001 327
 -----------------------------------------------------------------------------------------
 Written by Martin Szinte (mail@martinszinte.net)
 -----------------------------------------------------------------------------------------
