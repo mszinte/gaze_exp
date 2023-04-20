@@ -1,0 +1,40 @@
+[
+    [
+        "function_str",
+        "def _add_provenance(in_file, settings):\n    from mriqc import __version__ as version\n    from nipype.utils.filemanip import hash_infile\n    out_prov = {\n        'md5sum': hash_infile(in_file),\n        'version': version,\n        'software': 'mriqc',\n        'webapi_url': settings.pop('webapi_url'),\n        'webapi_port': settings.pop('webapi_port'),\n    }\n\n    if settings:\n        out_prov['settings'] = settings\n\n    return out_prov\n"
+    ],
+    [
+        "in_file",
+        [
+            "/work_dir/gaze_exp/sub-001/ses-05/func/sub-001_ses-05_task-GazeLines_run-04_bold.nii.gz",
+            "8383baebbd9a6bf0764c5ed26b2f1500"
+        ]
+    ],
+    [
+        "settings",
+        [
+            [
+                "fd_thres",
+                "0.2000000000"
+            ],
+            [
+                "hmc_fsl",
+                false
+            ],
+            [
+                "webapi_port",
+                null
+            ],
+            [
+                "webapi_url",
+                "https://mriqc.nimh.nih.gov/api/v1"
+            ]
+        ]
+    ],
+    [
+        "needed_outputs",
+        [
+            "out"
+        ]
+    ]
+]
