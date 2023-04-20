@@ -16,7 +16,7 @@ Output(s):
 -----------------------------------------------------------------------------------------
 To run:
 1. cd to function
->> cd ~/projects/gaze_exp/analysis_code/preproc/
+>> cd ~/projects/gaze_exp/analysis_code/preproc/functional/
 2. run python command
 python preproc_end.py [main directory] [project name] [subject name] [group]
 -----------------------------------------------------------------------------------------
@@ -28,7 +28,6 @@ Written by Martin Szinte (mail@martinszinte.net)
 """
 
 # Stop warnings
-# -------------
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -38,7 +37,6 @@ import sys
 import os
 import glob
 import ipdb
-import platform
 import numpy as np
 import nibabel as nb
 import itertools as it
@@ -55,7 +53,7 @@ subject = sys.argv[3]
 group = sys.argv[4]
 
 # load settings
-with open('/../../settings.json') as f:
+with open('../../settings.json') as f:
     json_s = f.read()
     analysis_info = json.loads(json_s)
 TR = analysis_info['TR']
@@ -67,45 +65,50 @@ runs = analysis_info['runs']
 sessions_excluded = sessions[2:]
 anat_session = sessions[2]
 
+# functional runs
+pp_data_func_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct".format(main_dir, project_dir, subject)
 
-# FUNCTIONAL
-for session in sessions :
-                              
-    if session in sessions_excluded :
-        continue
+# for session in sessions:
+    
+#     # excluded essions
+#     if session in sessions_excluded :
+#         continue
+    
+#     # Get fmriprep filenames
+#     fmriprep_dir = "{}/{}/derivatives/fmriprep/fmriprep/{}/{}/func/".format(main_dir, project_dir, subject, session)
+#     fmriprep_func_fns = glob.glob("{}/*_desc-preproc_bold.nii.gz".format(fmriprep_dir))
+#     fmriprep_mask_fns = glob.glob("{}/*_desc-brain_mask.nii.gz".format(fmriprep_dir))
+#     
+#     os.makedirs(pp_data_func_dir, exist_ok=True)
 
-    # Get fmriprep filenames
-    fmriprep_dir = "{}/{}/derivatives/fmriprep/fmriprep/{}/{}/func/".format(main_dir, project_dir, subject, session)
-    fmriprep_func_fns = glob.glob("{}/*_desc-preproc_bold.nii.gz".format(fmriprep_dir))
-    fmriprep_mask_fns = glob.glob("{}/*_desc-brain_mask.nii.gz".format(fmriprep_dir))
-    pp_data_func_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct".format(main_dir, project_dir, subject)
-    os.makedirs(pp_data_func_dir, exist_ok=True)
+#     # High pass filtering and z-scoring
+#     print("high-pass filtering...")
+#     for func_fn, mask_fn in zip(fmriprep_func_fns,fmriprep_mask_fns):    
+#         masked_data = masking.apply_mask(func_fn, mask_fn)
 
-    # High pass filtering and z-scoring
-    print("high-pass filtering...")
-    for func_fn, mask_fn in zip(fmriprep_func_fns,fmriprep_mask_fns):    
-        masked_data = masking.apply_mask(func_fn, mask_fn)
+#         if high_pass_type == 'dct':
+#             n_vol = masked_data.shape[0]
+#             ft = np.linspace(0.5 * TR, (n_vol + 0.5) * TR, n_vol, endpoint=False)
+#             hp_set = _cosine_drift(high_pass_threshold, ft)
+#             masked_data = signal.clean(masked_data, detrend=False, standardize=True, confounds=hp_set)
 
-        if high_pass_type == 'dct':
-            n_vol = masked_data.shape[0]
-            ft = np.linspace(0.5 * TR, (n_vol + 0.5) * TR, n_vol, endpoint=False)
-            hp_set = _cosine_drift(high_pass_threshold, ft)
-            masked_data = signal.clean(masked_data, detrend=False, standardize=True, confounds=hp_set)
+#         elif high_pass_type == 'savgol':
+#             window = int(np.round((1 / high_pass_threshold) / TR))
+#             masked_data -= savgol_filter(masked_data, window_length=window, polyorder=2, axis=0)
+#             masked_data = signal.clean(masked_data, detrend=False, standardize=True)
 
-        elif high_pass_type == 'savgol':
-            window = int(np.round((1 / high_pass_threshold) / TR))
-            masked_data -= savgol_filter(masked_data, window_length=window, polyorder=2, axis=0)
-            masked_data = signal.clean(masked_data, detrend=False, standardize=True)
-
-        high_pass_func = masking.unmask(masked_data, mask_fn)
-        high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
+#         high_pass_func = masking.unmask(masked_data, mask_fn)
+#         high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
 
 # Rename files
 current_name = glob.glob("{}/*_desc-preproc_bold_dct.nii.gz".format(pp_data_func_dir))
+
+
+## CHECK IF IT REALLY RENAME WELL THE THINGS
 for t in range(len(current_name)):
     new_file_name = '{}_task-{}_{}_{}.nii.gz'.format(subject, task, runs[t], high_pass_type)
+    deb()
     os.rename(os.path.join(current_name[t]), os.path.join(pp_data_func_dir, new_file_name))
-
 
 # Averaging tasks runs
 preproc_files = glob.glob("{}/*_{}.nii.gz".format(pp_data_func_dir, high_pass_type))

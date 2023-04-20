@@ -44,7 +44,7 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
  
 #### Structural preprocessing
 - [x] run MRIQC using [mriqc_sbatch.py](analysis_code/preproc/anatomical/mriqc_sbatch.py)
-- [x] run fMRIPrep [fmriprep_sbatch.py](analysis_code/preproc/functional/fmriprep_sbatch.py)
+- [x] run fMRIPrep (anat-only) [fmriprep_sbatch.py](analysis_code/preproc/functional/fmriprep_sbatch.py)
 - [x] create sagital view video before manual edit [sagital_view.py](analysis_code/preproc/anatomical/sagital_view.py)
 - [x] manual edit of brain segmentation [pial_edits.sh](analysis_code/preproc/anatomical/pial_edits.sh)
 - [x] FreeSurfer with new brainmask manually edited [freesurfer_pial.py](analysis_code/preproc/anatomical/freesurfer_pial.py)
@@ -53,7 +53,7 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 - [x] flatten the cut brains [flatten_sbatch.py](analysis_code/preproc/anatomical/flatten_sbatch.py)
 
 #### Functional preprocessing
-- [x] fMRIprep [fmriprep_sbatch.py](analysis_code/preproc/functional/fmriprep_sbatch.py)
+- [x] run fMRIprep [fmriprep_sbatch.py](analysis_code/preproc/functional/fmriprep_sbatch.py)
 - [x] high-pass, z-score, average and leave-one-out average [preproc_end.py](analysis_code/preproc/functional/preproc_end.py)
 - [x] Load freesurfer and execute [pycortex_import.py](analysis_code/preproc/functional/pycortex_import.py): run only [freesurfer_import_pycortex.py](analysis_code/preproc/functional/freesurfer_import_pycortex.py)
 
@@ -72,13 +72,6 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 - [x] make webgl with the pycortex dataset [pycortex_maps.py](analysis_code/postproc/prf/webgl/pycortex_webgl.py) 
 - [x] send the files [send_data.sh](analysis_code/postproc/prf/webgl/send_data.sh)
 
-#### First set of analysis
->>>>>>> change of gaze_exp readme to match new analysis
+#### Correlation analysis
 - correlation maps between GazeCW/GazeCCW and GazeColumns/GazeLines using _postproc/cormaps.py_
 - draw correlation maps on pycortex flatmaps using _postproc/pycortex_cormaps.ipynb_
-
-### Main analysis
-- [ ] extract all data as pickle files or tsv
-- [ ] think about the individual participants figures
-
-

@@ -17,12 +17,12 @@
 # To run:
 # 0. TO RUN LOCALLY WITH FREEWIEW INSTALLED (not on server)
 # 1. cd to function
-# >> cd ~/disks/meso_H/projects/stereo_prf/analysis_code/preproc/anatomical/
+# >> cd ~/disks/meso_H/projects/gaze_exp/analysis_code/preproc/anatomical/
 # 2. run shell command
 # sh pial_edits.sh [main directory] [project name] [subject name] [mesocentre_ID]
 # -----------------------------------------------------------------------------------------
 # Exemple:
-# sh pial_edits.sh /scratch/mszinte/data/ amblyo_prf sub-01 mszinte
+# sh pial_edits.sh /scratch/mszinte/data/ gaze_exp sub-001 mszinte
 # -----------------------------------------------------------------------------------------
 # Written by Martin Szinte (mail@martinszinte.net)
 # -----------------------------------------------------------------------------------------

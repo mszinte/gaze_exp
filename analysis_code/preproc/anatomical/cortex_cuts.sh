@@ -17,13 +17,13 @@
 # To run:
 # 0. TO RUN LOCALLY WITH FREEWIEW INSTALLED (not on server)
 # 1. cd to function
-# >> cd ~/disks/meso_H/projects/stereo_prf/analysis_code/preproc/anatomical/
+# >> cd ~/disks/meso_H/projects/gaze_exp/analysis_code/preproc/anatomical/
 # 2. run shell command
 # sh preproc/cortex_cuts.sh [main directory] [project name] [subject name] [mesocentre_ID] [hemisphere]
 # -----------------------------------------------------------------------------------------
 # Exemple:
-# sh cortex_cuts.sh /scratch/mszinte/data amblyo_prf sub-01 mszinte lh
-# sh cortex_cuts.sh /scratch/mszinte/data amblyo_prf sub-01 mszinte rh
+# sh cortex_cuts.sh /scratch/mszinte/data gaze_exp sub-001 mszinte lh
+# sh cortex_cuts.sh /scratch/mszinte/data gaze_exp sub-001 mszinte rh
 # -----------------------------------------------------------------------------------------
 # Written by Martin Szinte (mail@martinszinte.net)
 # -----------------------------------------------------------------------------------------

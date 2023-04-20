@@ -10,18 +10,19 @@ sys.argv[1]: main project directory
 sys.argv[2]: project name (correspond to directory)
 sys.argv[3]: subject (e.g. sub-01)
 sys.argv[4]: group (e.g. 327)
+sys.argv[5]: project name (e.g. b327)
 -----------------------------------------------------------------------------------------
 Output(s):
 preprocessed files
 -----------------------------------------------------------------------------------------
 To run:
 1. cd to function
->> cd ~/projects/stereo_prf/analysis_code/preproc/anatomical/
+>> cd ~/projects/gaze_exp/analysis_code/preproc/anatomical/
 2. run python command
 python flatten_sbatch.py [main directory] [project name] [subject] [group]
 -----------------------------------------------------------------------------------------
 Example:
-python flatten_sbatch.py /scratch/mszinte/data amblyo_prf sub-01 327
+python flatten_sbatch.py /scratch/mszinte/data gaze_exp sub-001 327 b327
 -----------------------------------------------------------------------------------------
 Written by Martin Szinte (mail@martinszinte.net)
 -----------------------------------------------------------------------------------------
@@ -38,13 +39,12 @@ opj = os.path.join
 main_dir = sys.argv[1]
 project_dir = sys.argv[2]
 subject = sys.argv[3]
-group = sys.argv[4]
 sub_num = subject[-2:]
+group = sys.argv[4]
+proj_name = sys.argv[4]
 hemis = ['lh', 'rh']
 
 # Define cluster/server specific parameters
-cluster_name  = 'skylake'
-proj_name = 'a327'
 nb_procs = 8
 memory_val = 48
 hour_proc = 20
@@ -76,8 +76,8 @@ cd '{fs_dir}/{subject}/surf/'\n\n""".format(proj_name=proj_name, nb_procs=nb_pro
                                             fs_dir=fs_dir, hemi=hemi)
 
     # define permission cmd
-    chmod_cmd = "\nchmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir)
-    chgrp_cmd = "\nchgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group)    
+    chmod_cmd = "\nchmod -Rf 771 {}/{}".format(main_dir, project_dir)
+    chgrp_cmd = "\nchgrp -Rf {} {}/{}".format(group, main_dir, project_dir)
 
     # define flatten cmd
     flatten_cmd = """\
