@@ -41,6 +41,7 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 - [x] Create bold and epi .json files, as well as particpant.tsv and .json and dataset_description.json and readme
 - [x] Copy subject manually edited freesurfer segmentations
 - [x] BIDS validations: change header time unit and duration
+- [ ] Deface subjects anatomy (to do in post-pilot study)
  
 #### Structural preprocessing
 - [x] run MRIQC using [mriqc_sbatch.py](analysis_code/preproc/anatomical/mriqc_sbatch.py)
@@ -55,7 +56,7 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 #### Functional preprocessing
 - [x] run fMRIprep [fmriprep_sbatch.py](analysis_code/preproc/functional/fmriprep_sbatch.py)
 - [x] high-pass, z-score, average and leave-one-out average [preproc_end.py](analysis_code/preproc/functional/preproc_end.py)
-- [x] Load freesurfer and execute [pycortex_import.py](analysis_code/preproc/functional/pycortex_import.py)
+- [x] Create pycortex database [pycortex_import.py](analysis_code/preproc/functional/pycortex_import.py)
 
 ---
 ### Post-processing
