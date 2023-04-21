@@ -69,7 +69,6 @@ for session in sessions :
     temp_dir = "{}/{}/derivatives/temp_data/{}_rand_ds/".format(main_dir, project_dir, subject)
     file_list = sorted(glob.glob("{}/{}/derivatives/pp_data/{}/func/fmriprep_dct/{}/*{}*.nii.gz".format(main_dir, project_dir, subject,session, task)))
 
-
     # set pycortex db and colormaps
     set_pycortex_config_file(cortex_dir)
     importlib.reload(cortex)
@@ -106,5 +105,5 @@ for session in sessions :
     cortex.webgl.make_static(outpath=temp_dir, data=ds)
 
 # Define permission cmd
-os.system("chmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir))
-os.system("chgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group))
+os.system("chmod -Rf 771 {}/{}".format(main_dir, project_dir))
+os.system("chgrp -Rf {} {}/{}".format(group, main_dir, project_dir))
