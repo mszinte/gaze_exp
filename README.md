@@ -55,7 +55,7 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 #### Functional preprocessing
 - [x] run fMRIprep [fmriprep_sbatch.py](analysis_code/preproc/functional/fmriprep_sbatch.py)
 - [x] high-pass, z-score, average and leave-one-out average [preproc_end.py](analysis_code/preproc/functional/preproc_end.py)
-- [x] Load freesurfer and execute [pycortex_import.py](analysis_code/preproc/functional/pycortex_import.py): run only [freesurfer_import_pycortex.py](analysis_code/preproc/functional/freesurfer_import_pycortex.py)
+- [x] Load freesurfer and execute [pycortex_import.py](analysis_code/preproc/functional/pycortex_import.py)
 
 ---
 ### Post-processing
