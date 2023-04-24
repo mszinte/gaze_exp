@@ -16,7 +16,7 @@ Output(s):
 -----------------------------------------------------------------------------------------
 To run:
 1. cd to function
->> cd ~/projects/gaze_exp/analysis_code/preproc/
+>> cd ~/projects/gaze_exp/analysis_code/preproc/functional/
 2. run python command
 python preproc_end.py [main directory] [project name] [subject name] [group]
 -----------------------------------------------------------------------------------------
@@ -28,7 +28,6 @@ Written by Martin Szinte (mail@martinszinte.net)
 """
 
 # Stop warnings
-# -------------
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -38,7 +37,6 @@ import sys
 import os
 import glob
 import ipdb
-import platform
 import numpy as np
 import nibabel as nb
 import itertools as it
@@ -55,7 +53,7 @@ subject = sys.argv[3]
 group = sys.argv[4]
 
 # load settings
-with open('/../../settings.json') as f:
+with open('../../settings.json') as f:
     json_s = f.read()
     analysis_info = json.loads(json_s)
 TR = analysis_info['TR']
@@ -67,22 +65,24 @@ runs = analysis_info['runs']
 sessions_excluded = sessions[2:]
 anat_session = sessions[2]
 
+# functional runs
+pp_data_func_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_{}".format(main_dir, project_dir, subject, high_pass_type)
 
-# FUNCTIONAL
-for session in sessions :
-                              
+for session in sessions:
+    
+    # excluded essions
     if session in sessions_excluded :
         continue
-
+    
     # Get fmriprep filenames
     fmriprep_dir = "{}/{}/derivatives/fmriprep/fmriprep/{}/{}/func/".format(main_dir, project_dir, subject, session)
     fmriprep_func_fns = glob.glob("{}/*_desc-preproc_bold.nii.gz".format(fmriprep_dir))
     fmriprep_mask_fns = glob.glob("{}/*_desc-brain_mask.nii.gz".format(fmriprep_dir))
-    pp_data_func_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct".format(main_dir, project_dir, subject)
+    
     os.makedirs(pp_data_func_dir, exist_ok=True)
 
     # High pass filtering and z-scoring
-    print("high-pass filtering...")
+    print("{}: high-pass filtering...".format(session))
     for func_fn, mask_fn in zip(fmriprep_func_fns,fmriprep_mask_fns):    
         masked_data = masking.apply_mask(func_fn, mask_fn)
 
@@ -101,18 +101,18 @@ for session in sessions :
         high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
 
 # Rename files
-current_name = glob.glob("{}/*_desc-preproc_bold_dct.nii.gz".format(pp_data_func_dir))
-for t in range(len(current_name)):
-    new_file_name = '{}_task-{}_{}_{}.nii.gz'.format(subject, task, runs[t], high_pass_type)
-    os.rename(os.path.join(current_name[t]), os.path.join(pp_data_func_dir, new_file_name))
-
+high_pass_fns = glob.glob("{}/*_{}.nii.gz".format(pp_data_func_dir,high_pass_type))
+for t, high_pass_fn in enumerate(np.sort(high_pass_fns)):
+    high_pass_rename_fn = '{}/{}_task-{}_run-{}_space-T1w_desc-preproc_bold_{}.nii.gz'.format(
+        pp_data_func_dir, subject, task, t+1, high_pass_type)
+    os.rename(high_pass_fn, high_pass_rename_fn)
 
 # Averaging tasks runs
 preproc_files = glob.glob("{}/*_{}.nii.gz".format(pp_data_func_dir, high_pass_type))
-avg_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_dct_avg".format(main_dir, project_dir, subject)
+avg_dir = "{}/{}/derivatives/pp_data/{}/func/fmriprep_{}_avg".format(main_dir, project_dir, subject, high_pass_type)
 os.makedirs(avg_dir, exist_ok=True)
 
-avg_file = "{}/{}_task-{}_fmriprep_dct_bold_avg.nii.gz".format(avg_dir, subject, task)
+avg_file = "{}/{}_task-{}_fmriprep_{}_bold_avg.nii.gz".format(avg_dir, subject, task, high_pass_type)
 img = nb.load(preproc_files[0])
 data_avg = np.zeros(img.shape)
 
@@ -136,7 +136,7 @@ for loo_num, avg_runs in enumerate(combi):
     print("loo_avg-{}".format(loo_num+1))
 
     # compute average between loo runs
-    loo_avg_file = "{}/{}_task-{}_fmriprep_dct_bold_loo_avg-{}.nii.gz".format(avg_dir, subject, task, loo_num+1)
+    loo_avg_file = "{}/{}_task-{}_fmriprep_{}_bold_loo_avg-{}.nii.gz".format(avg_dir, subject, task, high_pass_type, loo_num+1)
 
     img = nb.load(preproc_files[0])
     data_loo_avg = np.zeros(img.shape)
@@ -154,7 +154,7 @@ for loo_num, avg_runs in enumerate(combi):
     # copy loo run (left one out run)
     for loo in preproc_files:
         if loo not in avg_runs:
-            loo_file = "{}/{}_task-{}_fmriprep_dct_bold_loo-{}.nii.gz".format(avg_dir, subject, task, loo_num+1)
+            loo_file = "{}/{}_task-{}_fmriprep_{}_bold_loo-{}.nii.gz".format(avg_dir, subject, task, high_pass_type, loo_num+1)
             print("loo: {}".format(loo))
             os.system("{} {} {}".format(trans_cmd, loo, loo_file))
 
@@ -173,7 +173,6 @@ for output_file in output_files:
     dest_file = "{}/{}_{}.nii.gz".format(dest_dir_anat, subject, output_file)
     os.system("{} {} {}".format(trans_cmd, orig_file, dest_file))
 
-
 # Define permission cmd
-os.system("chmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir))
-os.system("chgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group))
+os.system("chmod -Rf 771 {}/{}".format(main_dir, project_dir))
+os.system("chgrp -Rf {group} {}/{}".format(group, main_dir, project_dir))

@@ -18,7 +18,7 @@ Nifti image files with fit parameters for a z slice
 -----------------------------------------------------------------------------------------
 To run :
 >> cd to function directory
-cd ~/projects/stereo_prf/analysis_code/postproc/
+cd ~/projects/gaze_exp/analysis_code/postproc/
 >> python prf/fit/prf_fit.py [subject] [timeseries] [visual design] 
                      [fit] [prediction] [nb_procs]
 -----------------------------------------------------------------------------------------
@@ -86,9 +86,9 @@ fit_mat = np.zeros((data.shape[0],data.shape[1],data.shape[2],6))
 pred_mat = np.zeros(data.shape)
 
 # determine model
-stimulus = PRFStimulus2D(screen_size_cm=screen_size_cm[1], 
+stimulus = PRFStimulus2D(screen_size_cm=screen_size_cm[0], 
                          screen_distance_cm=screen_distance_cm,
-                         design_matrix=vdm, 
+                         design_matrix=vdm,
                          TR=TR)
 
 gauss_model = Iso2DGaussianModel(stimulus=stimulus)
