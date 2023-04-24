@@ -10,6 +10,7 @@ sys.argv[1]: main project directory
 sys.argv[2]: project name (correspond to directory)
 sys.argv[3]: subject name (e.g. sub-01)
 sys.argv[4]: group (e.g. 327)
+sys.argv[5]: project name (e.g. b327)
 -----------------------------------------------------------------------------------------
 Output(s):
 .sh file to execute in server
@@ -25,7 +26,7 @@ Exemple:
 python submit_fit_jobs.py [main directory] [project name] [subject num] [group]
 -----------------------------------------------------------------------------------------
 Exemple:
-python submit_fit_jobs.py /scratch/mszinte/data gaze_exp sub-001 327
+python submit_fit_jobs.py /scratch/mszinte/data gaze_exp sub-001 327 b327
 -----------------------------------------------------------------------------------------
 Written by Martin Szinte (mail@martinszinte.net)
 -----------------------------------------------------------------------------------------
@@ -56,6 +57,7 @@ main_dir = sys.argv[1]
 project_dir = sys.argv[2]
 subject = sys.argv[3]
 group = sys.argv[4]
+proj_name = sys.argv[5]
 
 # Cluster settings
 fit_per_hour = 15000.0
@@ -102,14 +104,15 @@ for fit_num, pp_avg_fn in enumerate(pp_avg_fns):
     slurm_cmd = """\
 #!/bin/bash
 #SBATCH -p skylake
-#SBATCH -A a327
+#SBATCH -A {proj_name}
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task={nb_procs}
 #SBATCH --time={job_dur}
 #SBATCH -e {log_dir}/{sub}_fit_{fit_num}_%N_%j_%a.err
 #SBATCH -o {log_dir}/{sub}_fit_{fit_num}_%N_%j_%a.out
 #SBATCH -J {sub}_fit_{fit_num}\n\n""".format(
-    nb_procs=nb_procs, log_dir=prf_logs_dir, job_dur=job_dur, sub=subject, fit_num=fit_num)
+        nb_procs=nb_procs, log_dir=prf_logs_dir, job_dur=job_dur,
+        sub=subject, fit_num=fit_num ,proj_name=proj_name)
 
     # define fit cmd
     fit_cmd = "python prf_fit.py {} {} {} {} {} {}".format(

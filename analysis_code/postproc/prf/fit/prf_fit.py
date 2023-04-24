@@ -66,8 +66,6 @@ TR = analysis_info['TR']
 grid_nr = analysis_info['grid_nr']
 max_ecc_size = analysis_info['max_ecc_size']
 
-deb()
-
 # Get task specific visual design matrix
 vdm = np.load(input_vd)
 
@@ -88,9 +86,9 @@ fit_mat = np.zeros((data.shape[0],data.shape[1],data.shape[2],6))
 pred_mat = np.zeros(data.shape)
 
 # determine model
-stimulus = PRFStimulus2D(screen_size_cm=screen_size_cm[1], 
+stimulus = PRFStimulus2D(screen_size_cm=screen_size_cm[0], 
                          screen_distance_cm=screen_distance_cm,
-                         design_matrix=vdm, 
+                         design_matrix=vdm,
                          TR=TR)
 
 gauss_model = Iso2DGaussianModel(stimulus=stimulus)
