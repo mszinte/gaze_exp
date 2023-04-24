@@ -62,7 +62,7 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 ### Post-processing
 
 #### PRF analysis
-- [x] create the visual matrix design [vdm_builder.py](analysis_code/postproc/prf/vdm_builder.py)
+- [x] create the visual matrix design [vdm_builder.py](analysis_code/postproc/prf/fit/vdm_builder.ipynb)
 - [x] Execute [prf_fit.py](analysis_code/postproc/prf/fit/prf_fit.py) to fit pRF parameters (eccentricity, size, amplitude, baseline, rsquare): run only [submit_fit_jobs.py](analysis_code/postproc/prf/fit/submit_fit_jobs.py)
 - [x] Compute pRF derivatives [compute_derivatives.py](analysis_code/postproc/prf/postfit/compute_derivatives.py)
     - [ ] add magnification factor see https://github.com/noahbenson/cortical-magnification-tutorial
