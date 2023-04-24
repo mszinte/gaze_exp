@@ -46,6 +46,11 @@ import datetime
 import ipdb
 deb = ipdb.set_trace
 
+with open('../../../settings.json') as f:
+    json_s = f.read()
+    analysis_info = json.loads(json_s)
+high_pass_type = analysis_info['high_pass_type']
+    
 # Inputs
 main_dir = sys.argv[1]
 project_dir = sys.argv[2]
@@ -68,12 +73,13 @@ prf_logs_dir = "{}/{}/prf/log_outputs".format(pp_dir, subject)
 os.makedirs(prf_logs_dir, exist_ok=True)
 
 # define permission cmd
-chmod_cmd = "\nchmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir)
-chgrp_cmd = "\nchgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group)
+chmod_cmd = "\nchmod -Rf 771 {}/{}".format(main_dir, project_dir)
+chgrp_cmd = "\nchgrp -Rf {} {}/{}".format(group, main_dir, project_dir)
 
 # Define fns (filenames)
 vdm_fn = "{}/{}/derivatives/vdm/vdm.npy".format(main_dir, project_dir)
-pp_avg_fns = glob.glob("{}/{}/func/fmriprep_dct_avg/*avg*.nii.gz".format(pp_dir,subject))
+pp_avg_fns = glob.glob("{}/{}/func/fmriprep_{}_avg/*avg*.nii.gz".format(
+    pp_dir, subject, high_pass_type))
 for fit_num, pp_avg_fn in enumerate(pp_avg_fns):
     
     input_fn = pp_avg_fn
@@ -118,4 +124,4 @@ for fit_num, pp_avg_fn in enumerate(pp_avg_fns):
 
     # Submit jobs
     print("Submitting {} to queue".format(sh_fn))
-    os.system("sbatch {}".format(sh_fn))
+    # os.system("sbatch {}".format(sh_fn))

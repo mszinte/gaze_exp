@@ -18,7 +18,7 @@ Nifti image files with fit parameters for a z slice
 -----------------------------------------------------------------------------------------
 To run :
 >> cd to function directory
-cd ~/projects/stereo_prf/analysis_code/postproc/
+cd ~/projects/gaze_exp/analysis_code/postproc/
 >> python prf/fit/prf_fit.py [subject] [timeseries] [visual design] 
                      [fit] [prediction] [nb_procs]
 -----------------------------------------------------------------------------------------
@@ -65,6 +65,8 @@ screen_distance_cm = analysis_info['screen_distance_cm']
 TR = analysis_info['TR']
 grid_nr = analysis_info['grid_nr']
 max_ecc_size = analysis_info['max_ecc_size']
+
+deb()
 
 # Get task specific visual design matrix
 vdm = np.load(input_vd)
