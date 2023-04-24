@@ -127,4 +127,4 @@ for fit_num, pp_avg_fn in enumerate(pp_avg_fns):
 
     # Submit jobs
     print("Submitting {} to queue".format(sh_fn))
-    # os.system("sbatch {}".format(sh_fn))
+    os.system("sbatch {}".format(sh_fn))
