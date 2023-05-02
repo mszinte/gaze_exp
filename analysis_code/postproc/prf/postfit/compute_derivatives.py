@@ -16,12 +16,12 @@ Combined estimate nifti file and pRF derivative nifti file
 -----------------------------------------------------------------------------------------
 To run:
 1. cd to function
->> cd ~/projects/stereo_prf/analysis_code/postproc/prf/postfit/
+>> cd ~/projects/gaze_exp/analysis_code/postproc/prf/postfit/
 2. run python command
 >> python compute_derivatives.py [main directory] [project name] [subject num] [group]
 -----------------------------------------------------------------------------------------
 Exemple:
-python compute_derivatives.py /scratch/mszinte/data amblyo_prf sub-01 327
+python compute_derivatives.py /scratch/mszinte/data gaze_exp sub-001 327
 -----------------------------------------------------------------------------------------
 Written by Martin Szinte (martin.szinte@gmail.com)
 -----------------------------------------------------------------------------------------
@@ -48,6 +48,7 @@ with open('../../../settings.json') as f:
     json_s = f.read()
     analysis_info = json.loads(json_s)
 task = analysis_info['task']
+high_pass_type = analysis_info['high_pass_type']
 
 # Inputs
 main_dir = sys.argv[1]
@@ -60,7 +61,8 @@ pp_dir = "{}/{}/derivatives/pp_data".format(main_dir, project_dir)
 prf_fit_dir = "{}/{}/prf/fit".format(pp_dir, subject)
 
 # Get timeseries filenames
-pp_avg_fns = glob.glob("{}/{}/func/fmriprep_dct_avg/*avg*.nii.gz".format(pp_dir,subject))
+pp_avg_fns = glob.glob("{}/{}/func/fmriprep_{}_avg/*avg*.nii.gz".format(
+    pp_dir, subject, high_pass_type))
 
 # Compute derivatives
 for pp_avg_fn in pp_avg_fns:
@@ -86,7 +88,8 @@ for pp_avg_fn in pp_avg_fns:
         deriv_img.to_filename(deriv_fn)
 
 # compute average loo derivatives
-loo_deriv_avg_fn = "{}/{}_task-{}_fmriprep_dct_bold_loo_avg_prf-deriv.nii.gz".format(prf_fit_dir, subject, task)
+loo_deriv_avg_fn = "{}/{}_task-{}_fmriprep_{}_bold_loo_avg_prf-deriv.nii.gz".format(
+    prf_fit_dir, subject, task, high_pass_type)
 print('Computing derivatives: {}'.format(loo_deriv_avg_fn))
 
 loo_deriv_fns = glob.glob("{}/*loo*{}-deriv.nii.gz".format(prf_fit_dir, task))
@@ -97,5 +100,5 @@ loo_deriv_img = nb.Nifti1Image(dataobj=loo_deriv_array, affine=fit_img.affine, h
 loo_deriv_img.to_filename(loo_deriv_avg_fn)
 
 # Define permission cmd
-os.system("chmod -Rf 771 {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir))
-os.system("chgrp -Rf {group} {main_dir}/{project_dir}".format(main_dir=main_dir, project_dir=project_dir, group=group))
+os.system("chmod -Rf 771 {}/{}".format(main_dir, project_dir))
+os.system("chgrp -Rf {} {}/{}".format(group, main_dir, project_dir))

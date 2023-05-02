@@ -9,6 +9,7 @@ Input(s):
 sys.argv[1]: main project directory
 sys.argv[2]: project name (correspond to directory)
 sys.argv[3]: subject name (e.g. sub-01)
+sys.argv[3]: save map in svg (y/n)
 -----------------------------------------------------------------------------------------
 Output(s):
 Pycortex flatmaps figures
@@ -21,7 +22,7 @@ To run:
 >> python pycortex_maps.py [main directory] [project name] [subject num]
 -----------------------------------------------------------------------------------------
 Exemple:
-python pycortex_maps.py ~/disks/meso_shared gaze_exp sub-001
+python pycortex_maps.py ~/disks/meso_S/data gaze_exp sub-001
 -----------------------------------------------------------------------------------------
 Written by Martin Szinte (mail@martinszinte.net)
 -----------------------------------------------------------------------------------------
@@ -51,13 +52,14 @@ with open('../../../settings.json') as f:
     analysis_info = json.loads(json_s)
 xfm_name = analysis_info["xfm_name"]
 task = analysis_info["task"]
+high_pass_type = analysis_info['high_pass_type']
 
 # Inputs
 main_dir = sys.argv[1]
 project_dir = sys.argv[2]
 subject = sys.argv[3]
+save_svg_in = sys.argv[4]
 try:
-    save_svg_in = input("Save maps in overlay.svg? (Yes/No): ").lower()
     if save_svg_in == 'yes' or save_svg_in == 'y':
         save_svg = True
     elif save_svg_in == 'no' or save_svg_in == 'n':
@@ -74,8 +76,8 @@ flatmaps_dir = '{}/{}/derivatives/pp_data/{}/prf/pycortex/flatmaps'.format(main_
 datasets_dir = '{}/{}/derivatives/pp_data/{}/prf/pycortex/datasets'.format(main_dir, project_dir, subject)
 os.makedirs(flatmaps_dir, exist_ok=True)
 os.makedirs(datasets_dir, exist_ok=True)
-deriv_avg_fn = "{}/{}_task-{}_fmriprep_dct_bold_avg_prf-deriv.nii.gz".format(fit_dir, subject, task)
-deriv_avg_loo_fn = "{}/{}_task-{}_fmriprep_dct_bold_loo_avg_prf-deriv.nii.gz".format(fit_dir, subject, task)
+deriv_avg_fn = "{}/{}_task-{}_fmriprep_{}_bold_avg_prf-deriv.nii.gz".format(fit_dir, subject, task, high_pass_type)
+deriv_avg_loo_fn = "{}/{}_task-{}_fmriprep_{}_bold_loo_avg_prf-deriv.nii.gz".format(fit_dir, subject, task, high_pass_type)
 deriv_fns = [deriv_avg_fn,deriv_avg_loo_fn]
 deriv_fn_labels = ['avg','loo_avg']
 
