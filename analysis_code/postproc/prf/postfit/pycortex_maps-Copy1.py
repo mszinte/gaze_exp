@@ -76,7 +76,8 @@ os.makedirs(flatmaps_dir, exist_ok=True)
 os.makedirs(datasets_dir, exist_ok=True)
 deriv_avg_fn = "{}/{}_task-{}_fmriprep_dct_bold_avg_prf-deriv.nii.gz".format(fit_dir, subject, task)
 deriv_avg_loo_fn = "{}/{}_task-{}_fmriprep_dct_bold_loo_avg_prf-deriv.nii.gz".format(fit_dir, subject, task)
-deriv_fns = [deriv_avg_fn,deriv_avg_loo_fn]
+deriv_r2_fn = "{}/{}_task-FullScreen_par-r2.nii.gz".format(fit_dir,subject)
+deriv_fns = [deriv_avg_fn,deriv_avg_loo_fn,deriv_r2_fn]
 deriv_fn_labels = ['avg','loo_avg']
 
 # Set pycortex db and colormaps
@@ -104,6 +105,7 @@ for deriv_fn, deriv_fn_label in zip(deriv_fns,deriv_fn_labels):
 
     # load data    
     deriv_mat = nb.load(deriv_fn).get_fdata()
+    deriv_mat1 = nb.load(deriv_r2_fn).get_fdata()
 
     # threshold data
     deriv_mat_th = deriv_mat
@@ -117,6 +119,15 @@ for deriv_fn, deriv_fn_label in zip(deriv_fns,deriv_fn_labels):
     all_th = np.array((amp_down,rsqr_th_down,rsqr_th_up,size_th_down,size_th_up,ecc_th_down,ecc_th_up)) 
     deriv_mat[np.logical_and.reduce(all_th)==False,rsq_idx]=0
 
+    # r-square FS
+    rsq_data1 = deriv_mat1[...]
+    alpha_range = analysis_info["alpha_range"]
+    alpha = (rsq_data1 - alpha_range[0])/(alpha_range[1]-alpha_range[0])
+    alpha[alpha>1]=1
+    param_rsq_FS = {'data': rsq_data1, 'cmap': cmap_uni, 'alpha': rsq_data1, 'vmin': 0,'vmax': 0.4,'cbar': 'discrete', 'cortex_type': 'VolumeRGB',
+                 'description': '{} rsquare'.format(task), 'curv_brightness': 1, 'curv_contrast': 0.1, 'add_roi': save_svg}
+    maps_names.append('rsq_FS')
+    
     # r-square
     rsq_data = deriv_mat[...,rsq_loo_idx]
     alpha_range = analysis_info["alpha_range"]
