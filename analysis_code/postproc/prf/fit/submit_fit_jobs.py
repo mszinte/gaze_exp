@@ -27,6 +27,7 @@ python submit_fit_jobs.py [main directory] [project name] [subject num] [group]
 -----------------------------------------------------------------------------------------
 Exemple:
 python submit_fit_jobs.py /scratch/mszinte/data gaze_exp sub-001 327 b327
+python submit_fit_jobs.py /scratch/mszinte/data gaze_exp sub-002 327 b327
 -----------------------------------------------------------------------------------------
 Written by Martin Szinte (mail@martinszinte.net)
 -----------------------------------------------------------------------------------------
