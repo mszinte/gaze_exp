@@ -17,10 +17,11 @@
     "screen_size_cm": [69.84,39.29],
     "screen_distance_cm": 225,
     "vdm_size_pix": [140,140],
-    "grid_nr":40,
-    "max_ecc_size": 20,
-    "ecc_th": [0,20],
+    "grid_nr": 50,
+    "max_ecc": 15,
+    "max_size": 20,
+    "ecc_th": [0.1,20],
     "size_th": [0.1,20],
     "rsqr_th": [0,1],
-    "alpha_range": [0,1]
+    "alpha_range": [0,0.4]
 }
