@@ -92,8 +92,8 @@ stimulus = PRFStimulus2D(screen_size_cm=screen_size_cm[0],
                          TR=TR)
 
 gauss_model = Iso2DGaussianModel(stimulus=stimulus)
-sizes = max_ecc_size * np.linspace(0.1,1,grid_nr)**2
-eccs = max_ecc_size * np.linspace(0.1,1,grid_nr)**2
+sizes = max_size * np.linspace(0.1,1,grid_nr)**2
+eccs = max_ecc * np.linspace(0.25,1,grid_nr)**2
 polars = np.linspace(0, 2*np.pi, grid_nr)
 
 # grid fit

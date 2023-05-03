@@ -80,7 +80,7 @@ os.makedirs(flatmaps_avg_dir, exist_ok=True)
 os.makedirs(flatmaps_loo_avg_dir, exist_ok=True)
 os.makedirs(datasets_avg_dir, exist_ok=True)
 os.makedirs(datasets_loo_avg_dir, exist_ok=True)
-deriv_avg_fn = "{}/{}_task-{}_fmriprep_{}_bold_avg_prf-deriv_new.nii.gz".format(fit_dir, subject, task, high_pass_type)
+deriv_avg_fn = "{}/{}_task-{}_fmriprep_{}_bold_avg_prf-deriv.nii.gz".format(fit_dir, subject, task, high_pass_type)
 deriv_avg_loo_fn = "{}/{}_task-{}_fmriprep_{}_bold_loo_avg_prf-deriv.nii.gz".format(fit_dir, subject, task, high_pass_type)
 deriv_fns = [deriv_avg_fn,deriv_avg_loo_fn]
 deriv_fn_labels = ['avg','loo_avg']
@@ -98,8 +98,8 @@ cmap_steps = 255
 
 # plot scales
 rsq_scale = [0, 0.6]
-ecc_scale = [0, 15]
-size_scale = [0, 15]
+ecc_scale = [0, 10]
+size_scale = [0, 10]
 
 print('Creating flatmaps...')
 
