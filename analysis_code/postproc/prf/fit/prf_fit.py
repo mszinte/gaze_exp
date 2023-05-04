@@ -64,7 +64,8 @@ screen_size_cm = analysis_info['screen_size_cm']
 screen_distance_cm = analysis_info['screen_distance_cm']
 TR = analysis_info['TR']
 grid_nr = analysis_info['grid_nr']
-max_ecc_size = analysis_info['max_ecc_size']
+max_ecc = analysis_info['max_ecc']
+max_size = analysis_info['max_size']
 
 # Get task specific visual design matrix
 vdm = np.load(input_vd)
