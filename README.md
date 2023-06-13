@@ -68,11 +68,17 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
     - [ ] add magnification factor see https://github.com/noahbenson/cortical-magnification-tutorial
 - [x] make pycortex maps [pycortex_maps.py](analysis_code/postproc/prf/postfit/pycortex_maps.py)
 - [x] draw ROIs using Inkscape
-- [x] extract ROIs masks [roi_masks.ipynb](analysis_code/ROIs/roi_masks.ipynb)
+- [x] extract ROIs masks [roi_masks.ipynb](analysis_code/postproc/prf/postfit/roi_masks.ipynb)
 - [X] make pdf files with the maps [pdf_maps.py](analysis_code/postproc/prf/postfit/pdf_maps.py)
 - [x] make webgl with the pycortex dataset [pycortex_maps.py](analysis_code/postproc/prf/webgl/pycortex_webgl.py) 
 - [x] send the files [send_data.sh](analysis_code/postproc/prf/webgl/send_data.sh)
 
 #### Correlation analysis
+- [x] extract all data as pickle files or tsv [make_tsv.ipynb](analysis_code/postproc/prf/postfit/make_tsv.ipynb)
+- plot pRF parameters
+    - [lines_size_r2_ecc.ipynb](analysis_code/postproc/correlations/lines_size_r2_ecc.ipynb)
+    - [Violin_plot.ipynb](analysis_code/postproc/correlations/Violin_plot.ipynb)
+    - [polar_angle.ipynb](analysis_code/postproc/correlations/polar_angle.ipynb)
+    
 - correlation maps between GazeCW/GazeCCW and GazeColumns/GazeLines using _postproc/cormaps.py_
 - draw correlation maps on pycortex flatmaps using _postproc/pycortex_cormaps.ipynb_
