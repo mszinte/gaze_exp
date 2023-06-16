@@ -377,3 +377,4 @@ def prf_fit2deriv(input_mat, stim_width, stim_height):
     deriv = deriv.astype(np.float32)
 
     return deriv
+

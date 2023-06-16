@@ -81,7 +81,7 @@ chgrp_cmd = "\nchgrp -Rf {} {}/{}".format(group, main_dir, project_dir)
 
 # Define fns (filenames)
 vdm_fn = "{}/{}/derivatives/vdm/vdm.npy".format(main_dir, project_dir)
-pp_avg_fns = glob.glob("{}/{}/func/fmriprep_{}_avg/*avg*.nii.gz".format(
+pp_avg_fns = glob.glob("{}/{}/func/fmriprep_{}_avg/*pRF*avg*.nii.gz".format(
     pp_dir, subject, high_pass_type))
 for fit_num, pp_avg_fn in enumerate(pp_avg_fns):
     
