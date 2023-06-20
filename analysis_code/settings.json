@@ -22,6 +22,7 @@
     "size_th": [0.1,20],
     "rsqr_th": [0,1],
     "alpha_range": [0,0.4],
+    "cf_alpha_range": [0,0.2],
     "grid_cf_nr": 11,
     "max_cf_size": 40
 }

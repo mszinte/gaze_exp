@@ -51,7 +51,7 @@ with open('../../../settings.json') as f:
     json_s = f.read()
     analysis_info = json.loads(json_s)
 xfm_name = analysis_info["xfm_name"]
-task = analysis_info["task"]
+task = 'prf'
 high_pass_type = analysis_info['high_pass_type']
 
 # Inputs
