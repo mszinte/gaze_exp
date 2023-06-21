@@ -75,7 +75,7 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 
 ### Connective field analysis
 - [x] Execute [cf_fit.py](analysis_code/postproc/cf/fit/cf_fit.py) to fit CF and get projected PRF parameters: run only [submit_fit_jobs.py](analysis_code/postproc/cf/fit/submit_fit_jobs.py)
-- [ ] make pycortex maps [pycortex_maps.py](analysis_code/postproc/cf/postfit/pycortex_maps.py)
+- [x] make pycortex maps [pycortex_maps.py](analysis_code/postproc/cf/postfit/pycortex_maps.py)
 
 #### Correlation analysis
 - [x] extract all data as pickle files or tsv [make_tsv.ipynb](analysis_code/postproc/prf/postfit/make_tsv.ipynb)

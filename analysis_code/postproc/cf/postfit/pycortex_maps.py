@@ -82,7 +82,7 @@ importlib.reload(cortex)
 
 # Maps settings
 rsq_idx, rsq_loo_idx, ecc_idx, polar_real_idx, polar_imag_idx , size_idx, \
-    amp_idx, baseline_idx, x_idx, y_idx, cf_size, cf_rsq_idx = 0,1,2,3,4,5,6,7,8,9,11,12
+    amp_idx, baseline_idx, x_idx, y_idx, cf_size_idx, cf_rsq_idx = 0,1,2,3,4,5,6,7,8,9,11,12
 cmap_polar, cmap_uni, cmap_ecc_size = 'hsv', 'Reds', 'Spectral'
 col_offset = 1.0/14.0
 cmap_steps = 255
@@ -169,7 +169,7 @@ param_size = {'data': size_data, 'cmap': cmap_ecc_size, 'alpha': alpha,
 maps_names.append('size')
 
 # CF size
-cf_size_data = cf_deriv_mat[cf_size,:]
+cf_size_data = cf_deriv_mat[cf_size_idx,:]
 param_cf_size = {'data': cf_size_data, 'cmap': cmap_ecc_size, 'alpha': alpha, 
                   'vmin': cf_size_scale[0], 'vmax': cf_size_scale[1], 'cbar': 'discrete', 
                   'cortex_type': 'VertexRGB', 'description': '{} CF size{}'.format(task, description_end), 
