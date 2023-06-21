@@ -74,8 +74,8 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 - [x] send the files [send_data.sh](analysis_code/postproc/prf/webgl/send_data.sh)
 
 ### Connective field analysis
-- [ ] Execute [cf_fit.py](analysis_code/postproc/cf/fit/cf_fit.py) to fit CF and get projected PRF parameters: run only [submit_fit_jobs.py](analysis_code/postproc/cf/fit/submit_fit_jobs.py)
-- [ ] make pycortex maps
+- [x] Execute [cf_fit.py](analysis_code/postproc/cf/fit/cf_fit.py) to fit CF and get projected PRF parameters: run only [submit_fit_jobs.py](analysis_code/postproc/cf/fit/submit_fit_jobs.py)
+- [ ] make pycortex maps [pycortex_maps.py](analysis_code/postproc/cf/postfit/pycortex_maps.py)
 
 #### Correlation analysis
 - [x] extract all data as pickle files or tsv [make_tsv.ipynb](analysis_code/postproc/prf/postfit/make_tsv.ipynb)
@@ -83,6 +83,6 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
     - [lines_size_r2_ecc.ipynb](analysis_code/postproc/correlations/lines_size_r2_ecc.ipynb)
     - [Violin_plot.ipynb](analysis_code/postproc/correlations/Violin_plot.ipynb)
     - [polar_angle.ipynb](analysis_code/postproc/correlations/polar_angle.ipynb)
-    
+
 - correlation maps between GazeCW/GazeCCW and GazeColumns/GazeLines using _postproc/cormaps.py_
 - draw correlation maps on pycortex flatmaps using _postproc/pycortex_cormaps.ipynb_

@@ -96,3 +96,4 @@ for gaze_direction in gaze_directions:
     # Submit jobs
     print("Submitting {} to queue".format(sh_fn))
     os.system("sbatch {}".format(sh_fn))
+    
