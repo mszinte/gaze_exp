@@ -71,7 +71,7 @@ os.makedirs(cf_fit_dir, exist_ok=True)
 gaze_cw_fn = "{}/{}_task-GazeCW_fmriprep_{}_bold_avg.nii.gz".format(avg_dir, subject, high_pass_type)
 gaze_ccw_fn = "{}/{}_task-GazeCCW_fmriprep_{}_bold_avg.nii.gz".format(avg_dir, subject, high_pass_type)
 deriv_avg_loo_fn = "{}/{}_task-prf_fmriprep_{}_bold_loo_avg_prf-deriv.nii.gz".format(prf_fit_dir, subject, high_pass_type)
-deriv_prf_surf_fn = "{}/{}_prf_fmriprep_{}_bold_loo_avg_prf-deriv.gii".format(cf_fit_dir, subject, high_pass_type) 
+deriv_prf_surf_fn = "{}/{}_task-prf_fmriprep_{}_bold_loo_avg_prf-deriv.gii".format(cf_fit_dir, subject, high_pass_type) 
 deriv_cf_surf_fn = "{}/{}_task-GazeCWCCW-{}_fmriprep_{}_bold_loo_avg_CFprf-deriv.gii".format(cf_fit_dir, subject, gaze_direction, high_pass_type)
 
 # Load data in volumes
