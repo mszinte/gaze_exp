@@ -87,6 +87,7 @@ def fit2deriv(fit_array, data_array, pred_array):
     deriv_array[...,7] = baseline
     deriv_array[...,8] = x
     deriv_array[...,9] = y
+    deriv_array[...,10]
 
     deriv_array = deriv_array.astype(np.float32)
 

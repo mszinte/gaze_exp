@@ -23,5 +23,7 @@
     "ecc_th": [0.1,20],
     "size_th": [0.1,20],
     "rsqr_th": [0,1],
-    "alpha_range": [0,0.4]
+    "alpha_range": [0,0.4],
+    "rois":["V1", "V2", "V3", "V3AB", "VO", "LO", "hMT+", "iIPS", "sIPS", "iPCS", "sPCS", "mPCS"],
+    "vertex_pcm_rad": 2
 }
