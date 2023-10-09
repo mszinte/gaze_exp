@@ -86,3 +86,19 @@ _AttendFix_GazeCenterFS / AttendStime_GazeCenterFS :_ Retinotopy tasks [expLaunc
 
 - correlation maps between GazeCW/GazeCCW and GazeColumns/GazeLines using _postproc/cormaps.py_
 - draw correlation maps on pycortex flatmaps using _postproc/pycortex_cormaps.ipynb_
+
+### DESU analysis 
+#### Préproc end (gazecolumn and gazeline task)
+- [x] high-pass, z-score [preproc_filtering_normalization.py](analysis_code/postproc/desu/codes/data_extraction/preproc_filtering_normalization.py)
+- [x] extract data from rois in tsv files [get_tsv_data.ipynb](analysis_code/postproc/desu/codes/data_extraction/get_tsv_data.ipynb)
+
+#### Optimisation des modèles 
+- Optimisation du SVC [optimisation_SVC.ipynb](analysis_code/postproc/desu/codes/optimisation_SVC.ipynb)
+- Optimisation de la régression logistique [optimisation__linear.ipynb](analysis_code/postproc/desu/codes/optimisation__linear.ipynb)
+- Optimisation du Gradient Boosting [optimisation_gradient.ipynb](analysis_code/postproc/desu/codes/optimisation_gradient.ipynb)
+- Optimisation du Deep Learning [decode_eye_positions_deep.ipynb](analysis_code/postproc/desu/codes/decode_eye_positions_deep.ipynb)
+
+#### Extraction des performances et figures 
+
+- Extraire les perforamnces des modèles optimisé [make_final_tsv.ipynb](analysis_code/postproc/desu/codes/make_final_tsv.ipynb)
+- Faire les figures finals [plot.ipynb](analysis_code/postproc/desu/codes/plot.ipynb)
