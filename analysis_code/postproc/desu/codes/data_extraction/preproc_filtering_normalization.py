@@ -53,7 +53,7 @@ subject = sys.argv[3]
 group = sys.argv[4]
 
 # load settings
-with open('../../settings.json') as f:
+with open('../../../../settings.json') as f:
     json_s = f.read()
     analysis_info = json.loads(json_s)
 TR = analysis_info['TR']
@@ -92,7 +92,30 @@ for func_fn, mask_fn in zip(fmriprep_func_fns,fmriprep_mask_fns):
     
     high_pass_func = masking.unmask(masked_data, mask_fn)
     high_pass_func.to_filename("{}/{}_{}.nii.gz".format(pp_data_func_dir,func_fn.split('/')[-1][:-7],high_pass_type))
-        
+
+for task in ['GazeColumns', 'GazeLines']:
+
+    # Averaging pRF tasks runs
+    preproc_files = glob.glob("{}/*task-{}*_{}.nii.gz".format(pp_data_func_dir, task, high_pass_type))
+    avg_dir = "{}/{}/derivatives/pp_data/{}/func/desu/fmriprep_{}_avg".format(main_dir, project_dir, subject, high_pass_type)
+    os.makedirs(avg_dir, exist_ok=True)
+
+    avg_file = "{}/{}_task-{}_fmriprep_{}_bold_avg.nii.gz".format(avg_dir, subject, task, high_pass_type)
+    img = nb.load(preproc_files[0])
+    data_avg = np.zeros(img.shape)
+
+    print("averaging...")
+    for file in preproc_files:
+        print('add: {}'.format(file))
+        data_val = []
+        data_val_img = nb.load(file)
+        data_val = data_val_img.get_fdata()
+        data_avg += data_val/len(preproc_files)
+
+    avg_img = nb.Nifti1Image(dataobj=data_avg, affine=img.affine, header=img.header)
+    avg_img.to_filename(avg_file)
+            
+    
 # ANATOMY
 # Load anatomical data
 print("getting anatomy...")
